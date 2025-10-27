@@ -3,10 +3,5 @@
   "devCommand": "npm run dev",
   "installCommand": "npm install",
   "framework": "nextjs",
-  "regions": ["iad1"],
-  "env": {
-    "JWT_SECRET": "@jwt_secret",
-    "GEMINI_API_KEY": "@gemini_api_key",
-    "GOOGLE_TRANSLATE_API_KEY": "@google_translate_api_key"
-  }
+  "regions": ["iad1"]
 }
