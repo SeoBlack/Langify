@@ -15,7 +15,7 @@ import {
 import { useToast } from "@/hooks/use-toast";
 
 export function PasswordChange() {
-  const { user } = useUserStore();
+  const { user, token } = useUserStore();
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
@@ -53,7 +53,7 @@ export function PasswordChange() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${user?.token}`,
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
           currentPassword: formData.currentPassword,

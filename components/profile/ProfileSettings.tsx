@@ -35,7 +35,7 @@ const LANGUAGES = [
 ];
 
 export function ProfileSettings() {
-  const { user, setUser } = useUserStore();
+  const { user, token, setUser } = useUserStore();
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
@@ -53,7 +53,7 @@ export function ProfileSettings() {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${user?.token}`,
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify(formData),
       });

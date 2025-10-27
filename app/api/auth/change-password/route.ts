@@ -57,8 +57,9 @@ export const POST = withAuth(async (req: NextRequest, userId: string) => {
     });
   } catch (error) {
     if (error instanceof z.ZodError) {
+      const firstIssue = error.issues?.[0]?.message || "Invalid input";
       return NextResponse.json(
-        { success: false, error: error.errors[0].message },
+        { success: false, error: firstIssue },
         { status: 400 }
       );
     }

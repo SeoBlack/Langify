@@ -3,7 +3,7 @@
 export interface User {
   id: string;
   email: string;
-  name: string;
+  name?: string;
   targetLanguage: string;
   avatar?: string;
   isVerified: boolean;
@@ -58,6 +58,21 @@ export interface ApiResponse<T> {
   success: boolean;
   data?: T;
   error?: string;
+}
+
+export interface Stats {
+  totalWords: number;
+  masteredWords: number;
+  streak: number;
+  weeklyStats: {
+    totalSessions: number;
+    totalWords: number;
+    totalMinutes: number;
+  };
+  masteryBreakdown: Array<{
+    level: number;
+    count: number;
+  }>;
 }
 
 export interface StatsResponse {
