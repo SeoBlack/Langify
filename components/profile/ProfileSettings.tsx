@@ -31,6 +31,7 @@ const LANGUAGES = [
   { value: "ja", label: "Japanese" },
   { value: "ko", label: "Korean" },
   { value: "zh", label: "Chinese" },
+  { value: "fi", label: "Finnish" },
 ];
 
 export function ProfileSettings() {

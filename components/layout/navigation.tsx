@@ -2,7 +2,14 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Home, BookOpen, Brain, User, LogOut } from "lucide-react";
+import {
+  Home,
+  BookOpen,
+  Brain,
+  User,
+  LogOut,
+  ClipboardList,
+} from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useUserStore } from "@/store/user-store";
 import { useAuth } from "@/hooks/use-auth";
@@ -13,6 +20,7 @@ const navigation = [
   { name: "Dashboard", href: "/", icon: Home },
   { name: "Translate", href: "/translate", icon: BookOpen },
   { name: "Practice", href: "/practice", icon: Brain },
+  { name: "Results", href: "/quiz-results", icon: ClipboardList },
   { name: "Profile", href: "/profile", icon: User },
 ];
 

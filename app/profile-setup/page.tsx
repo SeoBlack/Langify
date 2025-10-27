@@ -34,6 +34,7 @@ const LANGUAGES = [
   { code: "zh", name: "Chinese", flag: "🇨🇳" },
   { code: "ar", name: "Arabic", flag: "🇸🇦" },
   { code: "hi", name: "Hindi", flag: "🇮🇳" },
+  { code: "fi", name: "Finnish", flag: "🇫🇮" },
 ];
 
 export default function ProfileSetupPage() {

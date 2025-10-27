@@ -37,3 +37,18 @@ export const useWords = (userId?: string, limit?: number) => {
 export const useRecentWords = (userId?: string, limit: number = 5) => {
   return useWords(userId, limit);
 };
+
+// Hook for fetching quiz results
+export const useQuizResults = (userId?: string, limit?: number) => {
+  return useQuery<any>({
+    queryKey: ["quizResults", userId, limit],
+    queryFn: async () => {
+      const url = limit
+        ? `/api/quiz-results?userId=${userId}&limit=${limit}`
+        : `/api/quiz-results?userId=${userId}`;
+      const res = await fetch(url);
+      return res.json();
+    },
+    enabled: !!userId,
+  });
+};

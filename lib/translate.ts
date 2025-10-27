@@ -66,4 +66,5 @@ export const SUPPORTED_LANGUAGES = [
   { code: "ko", name: "Korean", flag: "🇰🇷" },
   { code: "ru", name: "Russian", flag: "🇷🇺" },
   { code: "ar", name: "Arabic", flag: "🇸🇦" },
+  { code: "fi", name: "Finnish", flag: "🇫🇮" },
 ];
