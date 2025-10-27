@@ -3,6 +3,13 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 async function main() {
+  // Skip seeding in production unless explicitly enabled
+  if (process.env.NODE_ENV === "production" && !process.env.ENABLE_SEEDING) {
+    console.log("⏭️  Skipping database seed in production mode");
+    console.log("💡 To enable seeding in production, set ENABLE_SEEDING=true");
+    return;
+  }
+
   console.log("🌱 Starting database seed...");
 
   // Create demo user

@@ -4,7 +4,8 @@ const nextConfig = {
   experimental: {
     serverActions: true,
   },
-}
+  // Optimize for production
+  swcMinify: true,
+};
 
-module.exports = nextConfig
-
+module.exports = nextConfig;
