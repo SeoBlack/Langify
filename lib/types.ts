@@ -5,8 +5,11 @@ export interface User {
   email: string;
   name?: string;
   targetLanguage: string;
+  nativeLanguage: string;
   avatar?: string;
   isVerified: boolean;
+  profileSetupCompleted: boolean;
+  onboardingCompleted: boolean;
   streak: number;
   totalWords: number;
   masteredWords: number;

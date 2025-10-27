@@ -8,6 +8,7 @@ interface User {
   targetLanguage: string;
   nativeLanguage: string;
   profileSetupCompleted: boolean;
+  onboardingCompleted: boolean;
   avatar?: string;
   isVerified: boolean;
   streak: number;

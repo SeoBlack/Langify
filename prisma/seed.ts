@@ -27,6 +27,7 @@ async function main() {
       nativeLanguage: "en",
       targetLanguage: "es",
       profileSetupCompleted: true,
+      onboardingCompleted: true,
     },
   });
   console.log("✅ Created demo user:", user.email);

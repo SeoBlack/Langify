@@ -5,7 +5,7 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 const JWT_SECRET = process.env.JWT_SECRET || "your-secret-key";
 
-export async function GET(request: NextRequest) {
+export async function POST(request: NextRequest) {
   try {
     const token = request.headers.get("authorization")?.replace("Bearer ", "");
 
@@ -22,37 +22,17 @@ export async function GET(request: NextRequest) {
       email: string;
     };
 
-    // Get user from database
-    const user = await prisma.user.findUnique({
+    // Update user to mark onboarding as completed
+    await prisma.user.update({
       where: { id: decoded.userId },
-      select: {
-        id: true,
-        email: true,
-        name: true,
-        targetLanguage: true,
-        nativeLanguage: true,
-        avatar: true,
-        isVerified: true,
-        profileSetupCompleted: true,
+      data: {
         onboardingCompleted: true,
-        streak: true,
-        totalWords: true,
-        masteredWords: true,
-        createdAt: true,
-        updatedAt: true,
       },
     });
 
-    if (!user) {
-      return NextResponse.json(
-        { success: false, error: "User not found" },
-        { status: 404 }
-      );
-    }
-
     return NextResponse.json({
       success: true,
-      data: user,
+      message: "Onboarding completed successfully",
     });
   } catch (error) {
     if (error instanceof jwt.JsonWebTokenError) {
@@ -62,7 +42,7 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    console.error("Get user error:", error);
+    console.error("Complete onboarding error:", error);
     return NextResponse.json(
       { success: false, error: "Internal server error" },
       { status: 500 }

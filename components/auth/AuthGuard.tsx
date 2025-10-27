@@ -8,12 +8,14 @@ interface AuthGuardProps {
   children: React.ReactNode;
   requireAuth?: boolean;
   requireProfileSetup?: boolean;
+  requireOnboarding?: boolean;
 }
 
 export function AuthGuard({
   children,
   requireAuth = true,
   requireProfileSetup = true,
+  requireOnboarding = true,
 }: AuthGuardProps) {
   const { isAuthenticated, isLoading, user } = useUserStore();
   const router = useRouter();
@@ -23,20 +25,23 @@ export function AuthGuard({
       if (requireAuth && !isAuthenticated) {
         router.push("/auth");
       } else if (!requireAuth && isAuthenticated) {
-        // Check if profile setup is needed before redirecting to dashboard
-        if (user && !user.profileSetupCompleted) {
+        // Check if onboarding is needed first
+        if (user && !user.onboardingCompleted) {
+          router.push("/onboarding");
+        } else if (user && !user.profileSetupCompleted) {
           router.push("/profile-setup");
         } else {
           router.push("/");
         }
-      } else if (
-        requireAuth &&
-        isAuthenticated &&
-        requireProfileSetup &&
-        user &&
-        !user.profileSetupCompleted
-      ) {
-        router.push("/profile-setup");
+      } else if (requireAuth && isAuthenticated) {
+        // Check onboarding first
+        if (requireOnboarding && user && !user.onboardingCompleted) {
+          router.push("/onboarding");
+        }
+        // Then check profile setup
+        else if (requireProfileSetup && user && !user.profileSetupCompleted) {
+          router.push("/profile-setup");
+        }
       }
     }
   }, [
@@ -44,6 +49,7 @@ export function AuthGuard({
     isLoading,
     requireAuth,
     requireProfileSetup,
+    requireOnboarding,
     user,
     router,
   ]);
@@ -64,6 +70,18 @@ export function AuthGuard({
     return null;
   }
 
+  // Check onboarding
+  if (
+    requireAuth &&
+    isAuthenticated &&
+    requireOnboarding &&
+    user &&
+    !user.onboardingCompleted
+  ) {
+    return null;
+  }
+
+  // Check profile setup
   if (
     requireAuth &&
     isAuthenticated &&

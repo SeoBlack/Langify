@@ -17,7 +17,7 @@ import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 
 const navigation = [
-  { name: "Dashboard", href: "/", icon: Home },
+  { name: "Dashboard", href: "/dashboard", icon: Home },
   { name: "Translate", href: "/translate", icon: BookOpen },
   { name: "Practice", href: "/practice", icon: Brain },
   { name: "Results", href: "/quiz-results", icon: ClipboardList },
