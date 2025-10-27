@@ -23,8 +23,15 @@ interface AuthResponse {
 }
 
 export function useAuth() {
-  const { user, token, isAuthenticated, login, logout, setLoading } =
-    useUserStore();
+  const {
+    user,
+    token,
+    isAuthenticated,
+    login,
+    logout,
+    setLoading,
+    updateUser,
+  } = useUserStore();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -95,6 +102,8 @@ export function useAuth() {
       const result = await response.json();
 
       if (result.success) {
+        // Update the store with the fresh user data
+        updateUser(result.data);
         return result.data;
       } else {
         logout();

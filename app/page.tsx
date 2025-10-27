@@ -12,10 +12,10 @@ export default function HomePage() {
     if (!isLoading) {
       if (!isAuthenticated) {
         router.push("/auth");
-      } else if (user && !user.onboardingCompleted) {
-        router.push("/onboarding");
       } else if (user && !user.profileSetupCompleted) {
         router.push("/profile-setup");
+      } else if (user && !user.onboardingCompleted) {
+        router.push("/onboarding");
       } else {
         router.push("/translate");
       }

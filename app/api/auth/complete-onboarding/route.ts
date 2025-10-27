@@ -23,16 +23,33 @@ export async function POST(request: NextRequest) {
     };
 
     // Update user to mark onboarding as completed
-    await prisma.user.update({
+    const updatedUser = await prisma.user.update({
       where: { id: decoded.userId },
       data: {
         onboardingCompleted: true,
+      },
+      select: {
+        id: true,
+        email: true,
+        name: true,
+        targetLanguage: true,
+        nativeLanguage: true,
+        avatar: true,
+        isVerified: true,
+        profileSetupCompleted: true,
+        onboardingCompleted: true,
+        streak: true,
+        totalWords: true,
+        masteredWords: true,
+        createdAt: true,
+        updatedAt: true,
       },
     });
 
     return NextResponse.json({
       success: true,
       message: "Onboarding completed successfully",
+      data: updatedUser,
     });
   } catch (error) {
     if (error instanceof jwt.JsonWebTokenError) {

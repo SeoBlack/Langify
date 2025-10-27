@@ -25,22 +25,22 @@ export function AuthGuard({
       if (requireAuth && !isAuthenticated) {
         router.push("/auth");
       } else if (!requireAuth && isAuthenticated) {
-        // Check if onboarding is needed first
-        if (user && !user.onboardingCompleted) {
-          router.push("/onboarding");
-        } else if (user && !user.profileSetupCompleted) {
+        // Check profile setup first
+        if (user && !user.profileSetupCompleted) {
           router.push("/profile-setup");
+        } else if (user && !user.onboardingCompleted) {
+          router.push("/onboarding");
         } else {
           router.push("/");
         }
       } else if (requireAuth && isAuthenticated) {
-        // Check onboarding first
-        if (requireOnboarding && user && !user.onboardingCompleted) {
-          router.push("/onboarding");
-        }
-        // Then check profile setup
-        else if (requireProfileSetup && user && !user.profileSetupCompleted) {
+        // Check profile setup first
+        if (requireProfileSetup && user && !user.profileSetupCompleted) {
           router.push("/profile-setup");
+        }
+        // Then check onboarding
+        else if (requireOnboarding && user && !user.onboardingCompleted) {
+          router.push("/onboarding");
         }
       }
     }
@@ -70,17 +70,6 @@ export function AuthGuard({
     return null;
   }
 
-  // Check onboarding
-  if (
-    requireAuth &&
-    isAuthenticated &&
-    requireOnboarding &&
-    user &&
-    !user.onboardingCompleted
-  ) {
-    return null;
-  }
-
   // Check profile setup
   if (
     requireAuth &&
@@ -88,6 +77,17 @@ export function AuthGuard({
     requireProfileSetup &&
     user &&
     !user.profileSetupCompleted
+  ) {
+    return null;
+  }
+
+  // Check onboarding
+  if (
+    requireAuth &&
+    isAuthenticated &&
+    requireOnboarding &&
+    user &&
+    !user.onboardingCompleted
   ) {
     return null;
   }

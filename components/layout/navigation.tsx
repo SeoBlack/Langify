@@ -2,19 +2,10 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import {
-  Home,
-  BookOpen,
-  Brain,
-  User,
-  LogOut,
-  ClipboardList,
-} from "lucide-react";
+import { Home, BookOpen, Brain, User, ClipboardList } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { useUserStore } from "@/store/user-store";
-import { useAuth } from "@/hooks/use-auth";
 import { Button } from "@/components/ui/button";
-import { useToast } from "@/hooks/use-toast";
+import { useUserStore } from "@/store/user-store";
 
 const navigation = [
   { name: "Dashboard", href: "/dashboard", icon: Home },
@@ -27,16 +18,6 @@ const navigation = [
 export function Navigation() {
   const pathname = usePathname();
   const { user, isAuthenticated } = useUserStore();
-  const { signOut } = useAuth();
-  const { toast } = useToast();
-
-  const handleLogout = async () => {
-    await signOut();
-    toast({
-      title: "Logged out",
-      description: "You have been successfully logged out.",
-    });
-  };
 
   if (!isAuthenticated) {
     return (
@@ -98,14 +79,6 @@ export function Navigation() {
               </Link>
             );
           })}
-
-          <button
-            onClick={handleLogout}
-            className="flex flex-col md:flex-row items-center justify-center md:justify-start gap-1 md:gap-3 px-3 py-3 md:px-4 md:py-3 text-xs md:text-sm font-medium rounded-lg transition-colors text-muted-foreground hover:text-foreground hover:bg-accent"
-          >
-            <LogOut className="h-5 w-5 md:h-4 md:w-4" />
-            <span className="md:flex">Logout</span>
-          </button>
         </div>
       </div>
     </nav>

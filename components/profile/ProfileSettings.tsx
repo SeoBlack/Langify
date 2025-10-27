@@ -1,7 +1,9 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { useUserStore } from "@/store/user-store";
+import { useAuth } from "@/hooks/use-auth";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -20,6 +22,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
+import { LogOut } from "lucide-react";
 
 const LANGUAGES = [
   { value: "es", label: "Spanish" },
@@ -37,6 +40,8 @@ const LANGUAGES = [
 export function ProfileSettings() {
   const { user, token, setUser } = useUserStore();
   const { toast } = useToast();
+  const { signOut } = useAuth();
+  const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
     name: user?.name || "",
@@ -97,6 +102,15 @@ export function ProfileSettings() {
       ...prev,
       targetLanguage: value,
     }));
+  };
+
+  const handleLogout = async () => {
+    await signOut();
+    toast({
+      title: "Logged out",
+      description: "You have been successfully logged out.",
+    });
+    router.push("/auth");
   };
 
   return (
@@ -172,6 +186,19 @@ export function ProfileSettings() {
             {isLoading ? "Updating..." : "Update Profile"}
           </Button>
         </form>
+
+        {/* Logout Button */}
+        <div className="mt-6 pt-6 border-t">
+          <Button
+            type="button"
+            variant="destructive"
+            onClick={handleLogout}
+            className="w-full"
+          >
+            <LogOut className="mr-2 h-4 w-4" />
+            Logout
+          </Button>
+        </div>
       </CardContent>
     </Card>
   );

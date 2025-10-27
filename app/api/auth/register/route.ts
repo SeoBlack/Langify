@@ -46,7 +46,16 @@ export async function POST(request: NextRequest) {
         email: true,
         name: true,
         targetLanguage: true,
+        nativeLanguage: true,
+        profileSetupCompleted: true,
+        onboardingCompleted: true,
+        isVerified: true,
+        streak: true,
+        totalWords: true,
+        masteredWords: true,
         createdAt: true,
+        updatedAt: true,
+        avatar: true,
       },
     });
 

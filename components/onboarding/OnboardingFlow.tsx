@@ -137,7 +137,7 @@ interface OnboardingFlowProps {
 export function OnboardingFlow({ onComplete }: OnboardingFlowProps) {
   const [currentStep, setCurrentStep] = useState(0);
   const [isCompleting, setIsCompleting] = useState(false);
-  const { token } = useUserStore();
+  const { token, updateUser } = useUserStore();
   const { getCurrentUser } = useAuth();
 
   const handleNext = () => {
@@ -165,9 +165,16 @@ export function OnboardingFlow({ onComplete }: OnboardingFlowProps) {
         },
       });
 
-      if (response.ok) {
-        // Refresh user data to include the onboardingCompleted flag
-        await getCurrentUser();
+      const result = await response.json();
+
+      if (response.ok && result.success) {
+        // Update the store directly with the returned user data
+        if (result.data) {
+          updateUser(result.data);
+        } else {
+          // Fallback: refresh user data
+          await getCurrentUser();
+        }
 
         toast({
           title: "Welcome to Langy!",
@@ -175,7 +182,7 @@ export function OnboardingFlow({ onComplete }: OnboardingFlowProps) {
         });
         onComplete();
       } else {
-        throw new Error("Failed to complete onboarding");
+        throw new Error(result.error || "Failed to complete onboarding");
       }
     } catch (error) {
       console.error("Error completing onboarding:", error);
