@@ -1,0 +1,109 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String         @id @default(cuid())
+  email         String         @unique
+  name          String?
+  password      String
+  avatar        String?
+  isVerified    Boolean        @default(false)
+  profileSetupCompleted Boolean @default(false)
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  words         Word[]
+  quizResults   QuizResult[]
+  practiceLog   PracticeLog[]
+  streak        Int            @default(0)
+  totalWords    Int            @default(0)
+  masteredWords Int            @default(0)
+  targetLanguage String         @default("es")
+  nativeLanguage String         @default("en")
+}
+
+model Category {
+  id          String   @id @default(cuid())
+  name        String   @unique
+  description String?
+  color       String?
+  icon        String?
+  createdAt   DateTime @default(now())
+  words       Word[]
+}
+
+model Word {
+  id              String        @id @default(cuid())
+  userId          String
+  user            User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  categoryId      String?
+  category        Category?     @relation(fields: [categoryId], references: [id])
+  original        String
+  translation     String
+  targetLanguage  String
+  sourceLanguage  String        @default("en")
+  context         String?
+  exampleSentence String?
+  masteryLevel    Int           @default(0) // 0-5 scale (calculated from xp)
+  xpPoints        Int           @default(0) // XP points accumulated
+  correctCount    Int           @default(0)
+  incorrectCount  Int           @default(0)
+  lastPracticed   DateTime?
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+  quizResults     QuizResult[]
+
+  @@index([userId])
+  @@index([categoryId])
+}
+
+model Quiz {
+  id            String       @id @default(cuid())
+  type          String       // "multiple_choice", "fill_blank", "definition"
+  question      String
+  correctAnswer String
+  options       String[]     // For multiple choice
+  word          String?      // The word being tested
+  context       String?      // Additional context for the question
+  createdAt     DateTime     @default(now())
+  results       QuizResult[]
+}
+
+model QuizResult {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  wordId      String
+  word        Word     @relation(fields: [wordId], references: [id], onDelete: Cascade)
+  quizId      String
+  quiz        Quiz     @relation(fields: [quizId], references: [id], onDelete: Cascade)
+  isCorrect   Boolean
+  timeTaken   Int?     // in seconds
+  createdAt   DateTime @default(now())
+
+  @@index([userId])
+  @@index([wordId])
+}
+
+model PracticeLog {
+  id              String   @id @default(cuid())
+  userId          String
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  activityType    String   // "quiz", "sentence_practice", "feedback"
+  score           Float?
+  wordsCount      Int      @default(0)
+  durationMinutes Int?
+  createdAt       DateTime @default(now())
+
+  @@index([userId])
+  @@index([createdAt])
+}
+
