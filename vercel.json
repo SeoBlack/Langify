@@ -5,7 +5,6 @@
   "framework": "nextjs",
   "regions": ["iad1"],
   "env": {
-    "DATABASE_URL": "@database_url",
     "JWT_SECRET": "@jwt_secret",
     "GEMINI_API_KEY": "@gemini_api_key",
     "GOOGLE_TRANSLATE_API_KEY": "@google_translate_api_key"
